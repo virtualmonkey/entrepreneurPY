@@ -1,11 +1,9 @@
 # main.py archive is the principal controller of all the logic of the app
 from moduloPerfilesYValidaciones import *
-#quiniela = {"Argentina" : ["Luis", "Adriana", "Leslie"], "Alemania" : ["Pedro", "Helena", "María", "Pablo"]  #
-#, "Brasil" : ["Marlene", "Ricardo"]}#Creación del diccionario con los datos iniciales       
-#dictionary type variables
+from moduloEventos import *
 currentUserDictionary = {}
 allUsersDictionary = {}
-
+allEventsDictionary ={}
 skillsPointsDictionary = {
     "Costura/Manufactura" : 2, 
     "Deportes" : 3, 
@@ -37,7 +35,7 @@ areasPointsNeededDictionary = {
 #También un diccionario que k = Nombre del area, v = puntos necesarios, para realizar el algoritmo del match
 skillsList = ["Costura/Manufactura", "Deportes", "Matemática/Programación", "Emprendimiento/Speaking", "Economía/Organización", "Tecnología/Procesos", "Cocina", "Pintura/Dibujo", "Canto/Danza", "Adaptación en diferentes Lugares y Culturas"]
 areasList = ["Moda y Estilo", "Salud y Bienestar", "Tecnología", "Negocios", "Administración", "Industria", "Gastronomía", "Arte", "Música", "Turismo"]
-
+myEventsList = []
 #boolean type variables
 
 isLoggedIn = False #variable that saves isLoggedInState
@@ -58,13 +56,77 @@ while continueExecuting!=0:
             menuSelection = int(menuSelection)
             if (optionInRange(menuSelection, 1, 6)):
                 if (menuSelection == 1): #Ver eventos colgados por otras socias
-                    print("Opción 1")
-                elif (menuSelection == 2):# Ver eventos a los que asistiré
-                    print("Opción 2")
+                    eventsThatMatch = [v for k,v in allEventsDictionary.items() if ((v["eventType"]) == currentUserDictionary["match"] and v["eventCreatorMail"] != currentUserDictionary["mail"])]
+                    for i in range (len(eventsThatMatch)):
+                        print(str(i+1) + " Nombre del evento: " + eventsThatMatch[i]["eventName"])
+                        print("   Creado Por: " + eventsThatMatch[i]["eventCreatorName"])
+                        print("   Mail de Contacti: " + eventsThatMatch[i]["eventCreatorMail"])
+                        print("   Dirección: " + eventsThatMatch[i]["eventDirection"])
+                        print("   Fecha de Inicio: " + eventsThatMatch[i]["eventDate"])
+                        print("   Hora de Inicio: " + eventsThatMatch[i]["eventHour"])
+                        print("   Apto para emprendedoras del área de: " + eventsThatMatch[i]["eventType"])
+                        print("\n")
+                    eventoSeleccionado = input("Ingrese el número del evento al que desea asistir, ingrese 0 si no desea asistir a ninguno:")
+                    if(validateNumber(eventoSeleccionado)):
+                        eventoSeleccionado = int(eventoSeleccionado)
+                        if(optionInRange(eventoSeleccionado, -1 ,len(eventsThatMatch))):
+                            if (eventoSeleccionado != 0):
+                                currentUserDictionary["eventsToAssist"].append(eventsThatMatch[eventoSeleccionado-1]["eventKey"])
+                                print("Ahora estás en la lista de asistencia de le evento: " + eventsThatMatch[eventoSeleccionado-1]["eventName"])
+                        else:
+                            print("El numero especificado está fuera del rango de opciones")
+                    else:
+                        print("Porfavor ingrese un numero de evento válido")
+                elif (menuSelection == 2):# Ver eventos a los que asistiré 
+                    print(currentUserDictionary["eventsToAssist"])
+                    eventsIWillAssistTo = [v for k,v in allEventsDictionary.items() if (v["eventKey"] in currentUserDictionary["eventsToAssist"])]
+                    if (len(eventsIWillAssistTo) != 0):
+                        for i in range (len(myEventsList)):
+                            print(str(i+1) + " Nombre del evento: " + eventsIWillAssistTo[i]["eventName"])
+                            print("   Creado Por: " + eventsIWillAssistTo[i]["eventCreatorName"])
+                            print("   Mail de Contacti: " + eventsIWillAssistTo[i]["eventCreatorMail"])
+                            print("   Dirección: " + eventsIWillAssistTo[i]["eventDirection"])
+                            print("   Fecha de Inicio: " + eventsIWillAssistTo[i]["eventDate"])
+                            print("   Hora de Inicio: " + eventsIWillAssistTo[i]["eventHour"])
+                            print("   Apto para emprendedoras del área de: " + eventsIWillAssistTo[i]["eventType"])
+                            print("\n")
+
+                
                 elif (menuSelection == 3): #Ver eventos creados por mí
-                    print("Opción 3")
+                    myEventsList = [v for k,v in allEventsDictionary.items() if (v["eventCreatorName"]) == currentUserDictionary["name"]]
+                    for i in range (len(myEventsList)):
+                        print(str(i+1) + " Nombre del evento: " + myEventsList[i]["eventName"])
+                        print("   Creado Por: " + myEventsList[i]["eventCreatorName"])
+                        print("   Mail de Contacto: " + myEventsList[i]["eventCreatorMail"])
+                        print("   Dirección: " + myEventsList[i]["eventDirection"])
+                        print("   Fecha de Inicio: " + myEventsList[i]["eventDate"])
+                        print("   Hora de Inicio: " + myEventsList[i]["eventHour"])
+                        print("   Apto para emprendedoras del área de: " + myEventsList[i]["eventType"])
+                        print("\n")
                 elif (menuSelection == 4): #Agregar un evento
-                    print("Opción 4")
+                    eventName = input("Ingrese el nombre del evento a guardar: ")
+                    eventCreatorName = currentUserDictionary["name"]
+                    eventCreatorMail = currentUserDictionary["mail"]
+                    eventDirection = input("Ingrese la dirección del evento (puede contener números y letras): ")
+                    eventDate = input("Ingrese la fecha en formato DD-MM-AAAA: ")
+                    eventHour = input("Ingrese la hora en formato de 24 horas HH:MM: ")
+                    eventType = currentUserDictionary["match"]
+                    newEvent = { 
+                        "eventName" : eventName,
+                        "eventCreatorName" : eventCreatorName,
+                        "eventCreatorMail": eventCreatorMail,
+                        "eventDirection": eventDirection,
+                        "eventDate": eventDate,
+                        "eventHour": eventHour,
+                        "eventType": eventType,
+                        "eventKey": eventName+eventCreatorMail #Puede o no estar
+                    }
+                    if (saveEvent(allEventsDictionary, newEvent, eventName+eventCreatorMail)):
+                        print("El evento se ha guardado exitosamente!")
+                    else:
+                        "El Evento con nombre "+ eventName +" y correo especificado ya existe!"
+
+                    
                 elif (menuSelection == 5): #Ver estadísticas de emprendimiento a nivel nacional
                     print("Opción 5")
                 elif (menuSelection == 6):#Cerrar sesión 
@@ -117,7 +179,8 @@ while continueExecuting!=0:
                                 "password" : password,
                                 "skillList": usersSkillsList,
                                 "areasList": userAreasList,
-                                "match": matchString
+                                "match": matchString,
+                                "eventsToAssist" : []
                                 }
                             allUsersDictionary[mail] = currentUserDictionary
                             isLoggedIn = True
@@ -147,4 +210,4 @@ while continueExecuting!=0:
             else:
                 print("Porfavor ingrese un número entre 1 y 6")
         else:
-            print("Porfavor ingrese sólo números")    
+            print("Porfavor ingrese sólo números")
