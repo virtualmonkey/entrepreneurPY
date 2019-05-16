@@ -18,6 +18,7 @@ losPerros = []
 for linea in lineas:
     columnas = linea.split(',')
     losPerros.append(columnas)
+losPerros.pop()
         
 nombre = input("ingrese el nombre del perro: ")
 raza = input("ingrese la raza del perro: ")
@@ -25,12 +26,12 @@ peso = input("ingrese el peso del perro: ")
 nuevoPerro = [nombre, raza, peso]
 
 losPerros.append(nuevoPerro)
-#print(losPerros)
+print(losPerros)
 
 with open('Mascotas.csv', 'a', encoding='utf-8') as f:
     #nuevaLinea = ','.join(nuevoPerro)
     #nuevaLinea += '\n'
-    nuevaLinea = "\n" + nombre + "," + raza + "," + peso + "\n"
+    nuevaLinea = nombre + "," + raza + "," + peso + "\n"
 
     f.write(nuevaLinea) #escribir
 f.close()
