@@ -30,6 +30,19 @@ areasPointsNeededDictionary = {
     "Turismo": 6
 }
 
+dataToShow = {
+    "Moda y Estilo": 0, 
+    "Salud y Bienestar": 0, 
+    "Tecnología": 0, 
+    "Negocios" : 0, 
+    "Administración": 0, 
+    "Industria": 0, 
+    "Gastronomía": 0, 
+    "Arte": 0, 
+    "Música": 0, 
+    "Turismo": 0
+}
+
 
 #Posteriormente hay que hacer un diccionario que contenga como key el nombre de la skill, y el peso que tienen
 #También un diccionario que k = Nombre del area, v = puntos necesarios, para realizar el algoritmo del match
@@ -71,8 +84,11 @@ while continueExecuting!=0:
                         eventoSeleccionado = int(eventoSeleccionado)
                         if(optionInRange(eventoSeleccionado, -1 ,len(eventsThatMatch))):
                             if (eventoSeleccionado != 0):
-                                currentUserDictionary["eventsToAssist"].append(eventsThatMatch[eventoSeleccionado-1]["eventKey"])
-                                print("Ahora estás en la lista de asistencia de le evento: " + eventsThatMatch[eventoSeleccionado-1]["eventName"])
+                                if(eventsThatMatch[eventoSeleccionado-1]["eventKey"] in currentUserDictionary["eventsToAssist"]):
+                                    print("Ya asistirás a este evento!")
+                                else:
+                                    currentUserDictionary["eventsToAssist"].append(eventsThatMatch[eventoSeleccionado-1]["eventKey"])
+                                    print("Ahora estás en la lista de asistencia de le evento: " + eventsThatMatch[eventoSeleccionado-1]["eventName"])
                         else:
                             print("El numero especificado está fuera del rango de opciones")
                     else:
@@ -125,10 +141,8 @@ while continueExecuting!=0:
                         print("El evento se ha guardado exitosamente!")
                     else:
                         "El Evento con nombre "+ eventName +" y correo especificado ya existe!"
-
-                    
                 elif (menuSelection == 5): #Ver estadísticas de emprendimiento a nivel nacional
-                    print("Opción 5")
+                    showGraphic(areasPointsNeededDictionary)
                 elif (menuSelection == 6):#Cerrar sesión 
                     print("Cerrando Sesión")
                     isLoggedIn = False
@@ -142,54 +156,59 @@ while continueExecuting!=0:
             menuSelection = int(menuSelection)
             if (optionInRange(menuSelection, 1, 3)):
                 if (menuSelection == 1): #Crear Perfil
-                    
                     name = input("Ingresa tu nombre completo: ")
-                    mail = input("Ingresa tu dirección de correo: ")
-                    if(allUsersDictionary.get(mail, 0) == 0):
-                        age = input ("Ingresa tu edad: ")
-                        if (validateNumber(age)):
-                            age = int(age)
-                            password = input("Ingrese una contraseña para su cuenta: ")
-                            usersSkillsList = []
-                            userAreasList = []
-                            tempSkillsList = skillsList.copy()
-                            tempAreasList = areasList.copy()
-                            selectionIndex = 0
-                            for i in range(4):
-                                print("LISTA DE HABILIDADES")
-                                for i in range (len(tempSkillsList)):
-                                    print (str(i+1) +". "+ str(tempSkillsList[i]))
-                                selectionIndex = int(input("Ingresa el número de una habilidad que consideras tener: "))
-                                usersSkillsList.append(tempSkillsList[selectionIndex-1])
-                                tempSkillsList.remove(tempSkillsList[selectionIndex - 1])
-                            for i in range(3):
-                                print("LISTA DE INTERESES")
-                                for i in range (len(tempAreasList)):
-                                    print (str(i+1) +". "+ str(tempAreasList[i]))
-                                selectionIndex = int(input("Ingresa el número de tu área de interés: "))
-                                userAreasList.append(tempAreasList[selectionIndex-1])
-                                tempAreasList.remove(tempAreasList[selectionIndex - 1])
-                            
-                            matchString = makeMatch(skillsPointsDictionary, areasPointsNeededDictionary, usersSkillsList, userAreasList)
-                            print("FELICIDADES, TIENES UN MATCH CON EL ÁREA DE " + matchString)
-                            currentUserDictionary = {
-                                "name": name,
-                                "mail": mail,
-                                "age": age,
-                                "password" : password,
-                                "skillList": usersSkillsList,
-                                "areasList": userAreasList,
-                                "match": matchString,
-                                "eventsToAssist" : []
-                                }
-                            allUsersDictionary[mail] = currentUserDictionary
-                            isLoggedIn = True
-                            print("Te has registrado correctamente!")
+                    if(validateOnlyLetters(name)):
+                        mail = input("Ingresa tu dirección de correo: ")
+                        if(validateMail(mail)):
+                            if(allUsersDictionary.get(mail, 0) == 0):
+                                age = input ("Ingresa tu edad: ")
+                                if (validateNumber(age)):
+                                    age = int(age)
+                                    password = input("Ingrese una contraseña para su cuenta: ")
+                                    usersSkillsList = []
+                                    userAreasList = []
+                                    tempSkillsList = skillsList.copy()
+                                    tempAreasList = areasList.copy()
+                                    selectionIndex = 0
+                                    for i in range(4):
+                                        print("LISTA DE HABILIDADES")
+                                        for i in range (len(tempSkillsList)):
+                                            print (str(i+1) +". "+ str(tempSkillsList[i]))
+                                        selectionIndex = int(input("Ingresa el número de una habilidad que consideras tener: "))
+                                        usersSkillsList.append(tempSkillsList[selectionIndex-1])
+                                        tempSkillsList.remove(tempSkillsList[selectionIndex - 1])
+                                    for i in range(3):
+                                        print("LISTA DE INTERESES")
+                                        for i in range (len(tempAreasList)):
+                                            print (str(i+1) +". "+ str(tempAreasList[i]))
+                                        selectionIndex = int(input("Ingresa el número de tu área de interés: "))
+                                        userAreasList.append(tempAreasList[selectionIndex-1])
+                                        tempAreasList.remove(tempAreasList[selectionIndex - 1])
+                                    
+                                    matchString = makeMatch(skillsPointsDictionary, areasPointsNeededDictionary, usersSkillsList, userAreasList)
+                                    print("FELICIDADES, TIENES UN MATCH CON EL ÁREA DE " + matchString)
+                                    dataToShow[matchString] += 1
+                                    currentUserDictionary = {
+                                        "name": name,
+                                        "mail": mail,
+                                        "age": age,
+                                        "password" : password,
+                                        "skillList": usersSkillsList,
+                                        "areasList": userAreasList,
+                                        "match": matchString,
+                                        "eventsToAssist" : []
+                                        }
+                                    allUsersDictionary[mail] = currentUserDictionary
+                                    isLoggedIn = True
+                                    print("Te has registrado correctamente!")
+                                else:
+                                    print("La edad debe ser un número, intente de nuevo!")
+                            else:
+                                print("El correo ya pertenece a una cuenta! Intenta ingresar seleccionando Login en el menú")
                         else:
-                            print("La edad debe ser un número, intente de nuevo!")
+                            print("Porfavor ingrese un mail válido!")
                     else:
-                        print("El correo ya pertenece a una cuenta! Intenta ingresar seleccionando Login en el menú")
-
+                        print("Porfavor ingrese un nombre formado solo por letras!")
                 elif (menuSelection == 2):#Ingresar
                     loginEmail = input("Ingresa el email de la cuenta: ")
                     loginPassword = input("Ingresa la constraseña para la cuenta: ")

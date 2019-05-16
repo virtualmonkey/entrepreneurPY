@@ -12,6 +12,7 @@ def optionInRange(x, minInRange, maxInRange):#Funcion para validar si un numero 
         return False#De lo contrario retonrara falso
 def getMenu(isLoggedIn):
 
+
     if (isLoggedIn == True):
         return """ 
                 MENU DE OPCIONES
@@ -44,3 +45,18 @@ def makeMatch (skillsPointsDic, areasPointsNeededDic, userSkillsLis, usersAreasL
                         maxIndex += 1
         
         return usersAreasLis[maxIndex]
+
+def validateOnlyLetters(name):
+	if (name.replace(' ','').isalpha()):
+		return True
+	return False
+
+def validateMail(mail):
+	if ("@gmail.com" in mail or "@hotmail.com" in mail or "@outlook.com" in mail or "@yahoo.com" in mail):
+			return True
+	return False
+def validatePassword(password):
+	if(len(password) >= 6):
+			return True
+	return False
+
