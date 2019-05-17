@@ -35,13 +35,13 @@ def showGraphic(dataToShowDictionary):
 def getUsers(usersDictionary):
     singleUser = {}
     eventsiWillAssit = []
-    with open('usuarios.csv', encoding='utf-8') as f:
+    with open('usuarios.csv', encoding='utf-8-sig') as f:
         texto = f.read()
     f.close()
     lines = texto.split('\n')
     lines.pop()
 
-    with open('asist.csv', encoding='utf-8') as f:
+    with open('asist.csv', encoding='utf-8-sig') as f:
         texto = f.read() #leer el contenido completo
     f.close()
     asistenciaLines = texto.split('\n')
@@ -58,7 +58,6 @@ def getUsers(usersDictionary):
             if (fieldsAsistencias[0] == fields[1]):
                 for i in range (1, len(fieldsAsistencias)):
                     eventsiWillAssit.append(fieldsAsistencias[i])
-                    print(eventsiWillAssit)
     
         singleUser["name"]=fields[0]
         singleUser["mail"] = fields[1]
@@ -66,16 +65,16 @@ def getUsers(usersDictionary):
         singleUser["password"] = fields[3]
         singleUser["match"] = fields[4]
         singleUser["eventsToAssist"] = eventsiWillAssit
-        #print(singleUser)
         eventsiWillAssit = []
         usersDictionary[singleUser["mail"]] = singleUser
         singleUser = {}
 
 def getEvents(allEventsDictionary):
-    with open('eventos.csv', encoding='utf-8') as f:
+    with open('eventos.csv', encoding='utf-8-sig') as f:
         texto = f.read()
     f.close()
     lines = texto.split('\n')
+    lines.pop()
     lines.pop()
     for x  in range (0, len(lines)):
         line = lines[x]
@@ -90,6 +89,7 @@ def getEvents(allEventsDictionary):
             "eventType": fields[6],
             "eventKey": fields[7]
         }
+        print(newEvent)
         allEventsDictionary[newEvent["eventKey"]] = newEvent
         newEvent = {}
 
@@ -127,10 +127,6 @@ def saveAsists(allUsersDictionary):
     lineas = texto.split('\n')
 
     lineas.pop()
-    for linea in lineas:
-        #columnas = linea.split(',')
-        #losPerros.append(columnas)
-        print(linea)
 
     nuevaLinea = ""
     filename = "asist.csv"
@@ -138,22 +134,14 @@ def saveAsists(allUsersDictionary):
     f = open(filename, "w+")
     f.close()
 
-    # for linea in lineas:
-    #     linea += "\n"
-    #     with open('asist.csv', 'a', encoding='utf-8') as f:
-    #         f.write(linea)
-    #     f.close()
     for generatedKey, value in allUsersDictionary.items():
-        print(generatedKey)
         if (len(value["eventsToAssist"]) > 0):
             with open('asist.csv', 'a', encoding='utf-8') as f:
-                print(value)
                 nuevaLinea += value["mail"]
                 for val in value["eventsToAssist"]:
                     nuevaLinea += ","
                     nuevaLinea += val
                 nuevaLinea += "\n"
-                print(nuevaLinea)
             f.close()
     with open('asist.csv', 'a', encoding='utf-8') as f:
         f.write(nuevaLinea)
@@ -182,7 +170,6 @@ def saveGraphicData(dataToShowDictionary):
     for generatedKey, value in dataToShowDictionary.items():
         with open('graficas.csv', 'a', encoding='utf-8') as f:
             nuevaLinea = generatedKey + "," + str(value) +"\n"
-            print(nuevaLinea)
             f.write(nuevaLinea) #escribir
         f.close()
         

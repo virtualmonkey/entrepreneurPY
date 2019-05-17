@@ -48,7 +48,6 @@ dataToShow = {
 }
 
 dataToShow = getGraphicData()
-print(dataToShow)
 #Posteriormente hay que hacer un diccionario que contenga como key el nombre de la skill, y el peso que tienen
 #También un diccionario que k = Nombre del area, v = puntos necesarios, para realizar el algoritmo del match
 skillsList = ["Costura/Manufactura", "Deportes", "Matematica/Programacion", "Emprendimiento/Speaking", "Economia/Organizacion", "Tecnologia/Procesos", "Cocina", "Pintura/Dibujo", "Canto/Danza", "Adaptacion en diferentes Lugares y Culturas"]
@@ -100,7 +99,6 @@ while continueExecuting!=0:
                     else:
                         print("Porfavor ingrese un numero de evento válido")
                 elif (menuSelection == 2):# Ver eventos a los que asistiré 
-                    print(currentUserDictionary["eventsToAssist"])
                     eventsIWillAssistTo = [v for k,v in allEventsDictionary.items() if (v["eventKey"] in currentUserDictionary["eventsToAssist"])]
                     if (len(eventsIWillAssistTo) != 0):
                         for i in range (len(eventsIWillAssistTo)):
