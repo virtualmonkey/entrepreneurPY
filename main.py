@@ -7,6 +7,7 @@ allEventsDictionary ={}
 
 getUsers(allUsersDictionary)
 getEvents(allEventsDictionary)
+
 skillsPointsDictionary = {
     "Costura/Manufactura" : 2, 
     "Deportes" : 3, 
@@ -40,13 +41,14 @@ dataToShow = {
     "Negocios" : 0, 
     "Administracion": 0, 
     "Industria": 0, 
-    "Gastronomia": 0, 
+    "Gastronomia": 0,
     "Arte": 0, 
     "Musica": 0, 
     "Turismo": 0
 }
 
-
+dataToShow = getGraphicData()
+print(dataToShow)
 #Posteriormente hay que hacer un diccionario que contenga como key el nombre de la skill, y el peso que tienen
 #También un diccionario que k = Nombre del area, v = puntos necesarios, para realizar el algoritmo del match
 skillsList = ["Costura/Manufactura", "Deportes", "Matematica/Programacion", "Emprendimiento/Speaking", "Economia/Organizacion", "Tecnologia/Procesos", "Cocina", "Pintura/Dibujo", "Canto/Danza", "Adaptacion en diferentes Lugares y Culturas"]
@@ -228,6 +230,7 @@ while continueExecuting!=0:
                     saveEvents(allEventsDictionary)
                     saveUsers(allUsersDictionary)
                     saveAsists(allUsersDictionary)
+                    saveGraphicData(dataToShow)
                     currentUserDictionary = {}
                     continueExecuting = 0
             else:

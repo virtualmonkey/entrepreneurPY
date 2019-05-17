@@ -159,7 +159,32 @@ def saveAsists(allUsersDictionary):
         f.write(nuevaLinea)
     f.close()
     
+def getGraphicData():
+    tempDataDictionary = {}
+    with open('graficas.csv', encoding='utf-8-sig') as f:
+        texto = f.read()
+    f.close()
+    lines = texto.split('\n')
+    lines.pop()
 
+    for x  in range (0, len(lines)):
+        line = lines[x]
+        fields = line.split(',')
+        tempDataDictionary[fields[0]] = int(fields[1])
+    return tempDataDictionary
+    
+def saveGraphicData(dataToShowDictionary):
+    filename = "graficas.csv"
+    # opening the file with w+ mode truncates the file
+    f = open(filename, "w+")
+    f.close()
+
+    for generatedKey, value in dataToShowDictionary.items():
+        with open('graficas.csv', 'a', encoding='utf-8') as f:
+            nuevaLinea = generatedKey + "," + str(value) +"\n"
+            print(nuevaLinea)
+            f.write(nuevaLinea) #escribir
+        f.close()
         
 
 
