@@ -64,9 +64,7 @@ menuSelection = 0
 #string type variables
 menu = ""
 while continueExecuting!=0:
-    print(allEventsDictionary)
-    print(allUsersDictionary)
-
+   
     menu = getMenu(isLoggedIn)
     print(menu)        
     if (isLoggedIn):
@@ -151,11 +149,16 @@ while continueExecuting!=0:
                     showGraphic(dataToShow)
                 elif (menuSelection == 6):#Cerrar sesión 
                     print("Cerrando Sesión")
+                    print(allUsersDictionary)
+                    saveEvents(allEventsDictionary)
+                    print(allUsersDictionary)
+                    saveUsers(allUsersDictionary)
+                    saveAsists(allUsersDictionary)
                     isLoggedIn = False
             else:
                 print("Porfavor ingrese un número entre 1 y 6")
         else:
-            print("Porfavor ingrese sólo números")    
+            print("Porfavor ingrese sólo números")
     elif (isLoggedIn == False):
         menuSelection = input("Por favor selecciona una opción del menú: ")
         if (validateNumber(menuSelection)):

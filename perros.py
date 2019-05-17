@@ -20,15 +20,21 @@ peso = input("ingrese el peso del perro: ")
 nuevoPerro = [nombre, raza, peso]
 
 losPerros.append(nuevoPerro)
+losPerros.append(nuevoPerro)
+losPerros.append(nuevoPerro)
 print(losPerros)
 
-with open('Mascotas.csv', 'a', encoding='utf-8') as f:
-    #nuevaLinea = ','.join(nuevoPerro)
-    #nuevaLinea += '\n'
-    nuevaLinea = nombre + "," + raza + "," + peso + "\n"
-
-    f.write(nuevaLinea) #escribir
+filename = "Mascotas.csv"
+# opening the file with w+ mode truncates the file
+f = open(filename, "w+")
 f.close()
+
+for i  in range (len(losPerros)):
+    with open('Mascotas.csv', 'a', encoding='utf-8') as f:
+        nuevaLinea = losPerros[i][0] + "," + losPerros[i][1] + "," + losPerros[i][2] + "\n"
+
+        f.write(nuevaLinea) #escribir
+    f.close()
 
 
 

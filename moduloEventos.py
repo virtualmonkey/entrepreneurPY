@@ -94,3 +94,72 @@ def getEvents(allEventsDictionary):
         newEvent = {}
 
 
+def saveEvents(allEventsDictionary):
+    filename = "eventos.csv"
+    # opening the file with w+ mode truncates the file
+    f = open(filename, "w+")
+    f.close()
+
+
+    for generatedKey, value in allEventsDictionary.items():
+        with open('eventos.csv', 'a', encoding='utf-8') as f:
+            nuevaLinea = value["eventName"] + "," + value["eventCreatorName"] + "," + value["eventCreatorMail"] + "," + value["eventDirection"]  +  "," + value["eventDate"] + "," + value["eventHour"] + "," + value["eventType"] + "," + value["eventKey"] +"\n"
+            f.write(nuevaLinea) #escribir
+        f.close()
+def saveUsers(allUsersDictionary):
+    filename = "usuarios.csv"
+    # opening the file with w+ mode truncates the file
+    f = open(filename, "w+")
+    f.close()
+
+    for generatedKey, value in allUsersDictionary.items():
+        with open('usuarios.csv', 'a', encoding='utf-8') as f:
+            nuevaLinea = value["name"] + "," + value["mail"] + "," + str(value["age"]) + "," + value["password"]  +  "," + value["match"] +"\n"
+            f.write(nuevaLinea) #escribir
+        f.close()
+
+def saveAsists(allUsersDictionary):
+    validation = False
+    with open('asist.csv', encoding='utf-8') as f:
+        texto = f.read() #leer el contenido completo
+    f.close()
+
+    lineas = texto.split('\n')
+
+    lineas.pop()
+    for linea in lineas:
+        #columnas = linea.split(',')
+        #losPerros.append(columnas)
+        print(linea)
+
+    nuevaLinea = ""
+    filename = "asist.csv"
+    # opening the file with w+ mode truncates the file
+    f = open(filename, "w+")
+    f.close()
+
+    for linea in lineas:
+        linea += "\n"
+        with open('asist.csv', 'a', encoding='utf-8') as f:
+            f.write(linea)
+        f.close()
+    for generatedKey, value in allUsersDictionary.items():
+        print(generatedKey)
+        if (validation == False):
+            if (len(value["eventsToAssist"]) > 0):
+                with open('asist.csv', 'a', encoding='utf-8') as f:
+                    print(value)
+                    nuevaLinea += value["name"]
+                    for val in value["eventsToAssist"]:
+                        nuevaLinea += ","
+                        nuevaLinea += val
+                    nuevaLinea += "\n"
+                    print(nuevaLinea)
+                    f.write(nuevaLinea) #escribir
+                    validation = True
+                f.close()
+    
+
+        
+
+
