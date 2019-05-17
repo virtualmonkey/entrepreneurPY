@@ -1,53 +1,56 @@
 # main.py archive is the principal controller of all the logic of the app
-from moduloPerfilesYValidaciones import *
 from moduloEventos import *
+from moduloPerfilesYValidaciones import *
 currentUserDictionary = {}
 allUsersDictionary = {}
 allEventsDictionary ={}
+
+getUsers(allUsersDictionary)
+getEvents(allEventsDictionary)
 skillsPointsDictionary = {
     "Costura/Manufactura" : 2, 
     "Deportes" : 3, 
-    "Matemática/Programación" : 5, 
+    "Matematica/Programacion" : 5, 
     "Emprendimiento/Speaking" : 5, 
-    "Economía/Organización" : 4, 
-    "Tecnología/Procesos": 5, 
+    "Economia/Organizacion" : 4, 
+    "Tecnologia/Procesos": 5, 
     "Cocina" : 3, 
     "Pintura/Dibujo": 2, 
     "Canto/Danza" : 2, 
-    "Adaptación en diferentes Lugares y Culturas": 2
+    "Adaptacion en diferentes Lugares y Culturas": 2
 
 }
 areasPointsNeededDictionary = {
     "Moda y Estilo": 8, 
     "Salud y Bienestar": 7, 
-    "Tecnología": 12, 
+    "Tecnologia": 12, 
     "Negocios" : 13, 
-    "Administración": 9, 
+    "Administracion": 9, 
     "Industria": 10, 
-    "Gastronomía": 7, 
+    "Gastronomia": 7, 
     "Arte": 7, 
-    "Música": 6, 
+    "Musica": 6, 
     "Turismo": 6
 }
 
 dataToShow = {
     "Moda y Estilo": 0, 
     "Salud y Bienestar": 0, 
-    "Tecnología": 0, 
+    "Tecnologia": 0, 
     "Negocios" : 0, 
-    "Administración": 0, 
+    "Administracion": 0, 
     "Industria": 0, 
-    "Gastronomía": 0, 
+    "Gastronomia": 0, 
     "Arte": 0, 
-    "Música": 0, 
+    "Musica": 0, 
     "Turismo": 0
 }
 
 
 #Posteriormente hay que hacer un diccionario que contenga como key el nombre de la skill, y el peso que tienen
 #También un diccionario que k = Nombre del area, v = puntos necesarios, para realizar el algoritmo del match
-skillsList = ["Costura/Manufactura", "Deportes", "Matemática/Programación", "Emprendimiento/Speaking", "Economía/Organización", "Tecnología/Procesos", "Cocina", "Pintura/Dibujo", "Canto/Danza", "Adaptación en diferentes Lugares y Culturas"]
-areasList = ["Moda y Estilo", "Salud y Bienestar", "Tecnología", "Negocios", "Administración", "Industria", "Gastronomía", "Arte", "Música", "Turismo"]
+skillsList = ["Costura/Manufactura", "Deportes", "Matematica/Programacion", "Emprendimiento/Speaking", "Economia/Organizacion", "Tecnologia/Procesos", "Cocina", "Pintura/Dibujo", "Canto/Danza", "Adaptacion en diferentes Lugares y Culturas"]
+areasList = ["Moda y Estilo", "Salud y Bienestar", "Tecnologia", "Negocios", "Administracion", "Industria", "Gastronomia", "Arte", "Musica", "Turismo"]
 myEventsList = []
 #boolean type variables
 
@@ -61,6 +64,9 @@ menuSelection = 0
 #string type variables
 menu = ""
 while continueExecuting!=0:
+    print(allEventsDictionary)
+    print(allUsersDictionary)
+
     menu = getMenu(isLoggedIn)
     print(menu)        
     if (isLoggedIn):
@@ -97,7 +103,7 @@ while continueExecuting!=0:
                     print(currentUserDictionary["eventsToAssist"])
                     eventsIWillAssistTo = [v for k,v in allEventsDictionary.items() if (v["eventKey"] in currentUserDictionary["eventsToAssist"])]
                     if (len(eventsIWillAssistTo) != 0):
-                        for i in range (len(myEventsList)):
+                        for i in range (len(eventsIWillAssistTo)):
                             print(str(i+1) + " Nombre del evento: " + eventsIWillAssistTo[i]["eventName"])
                             print("   Creado Por: " + eventsIWillAssistTo[i]["eventCreatorName"])
                             print("   Mail de Contacti: " + eventsIWillAssistTo[i]["eventCreatorMail"])
@@ -135,14 +141,14 @@ while continueExecuting!=0:
                         "eventDate": eventDate,
                         "eventHour": eventHour,
                         "eventType": eventType,
-                        "eventKey": eventName+eventCreatorMail #Puede o no estar
+                        "eventKey": eventName+eventCreatorMail
                     }
                     if (saveEvent(allEventsDictionary, newEvent, eventName+eventCreatorMail)):
                         print("El evento se ha guardado exitosamente!")
                     else:
                         "El Evento con nombre "+ eventName +" y correo especificado ya existe!"
                 elif (menuSelection == 5): #Ver estadísticas de emprendimiento a nivel nacional
-                    showGraphic(areasPointsNeededDictionary)
+                    showGraphic(dataToShow)
                 elif (menuSelection == 6):#Cerrar sesión 
                     print("Cerrando Sesión")
                     isLoggedIn = False
@@ -193,8 +199,6 @@ while continueExecuting!=0:
                                         "mail": mail,
                                         "age": age,
                                         "password" : password,
-                                        "skillList": usersSkillsList,
-                                        "areasList": userAreasList,
                                         "match": matchString,
                                         "eventsToAssist" : []
                                         }

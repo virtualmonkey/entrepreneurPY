@@ -4,20 +4,14 @@ f.close()
 
 print('Contenido del archivo:')
 
-#print(texto)
 print('===================================')
 lineas = texto.split('\n')
-
-#for indice in range(0, len(lineas)):
-#    columnas = lineas[indice].split(',')
-#    
-#    if indice != 0:
-#        print(columnas[0], ' - ', columnas[1])
 
 losPerros = []
 for linea in lineas:
     columnas = linea.split(',')
     losPerros.append(columnas)
+    print(columnas)
 losPerros.pop()
         
 nombre = input("ingrese el nombre del perro: ")
