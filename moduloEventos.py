@@ -138,26 +138,26 @@ def saveAsists(allUsersDictionary):
     f = open(filename, "w+")
     f.close()
 
-    for linea in lineas:
-        linea += "\n"
-        with open('asist.csv', 'a', encoding='utf-8') as f:
-            f.write(linea)
-        f.close()
+    # for linea in lineas:
+    #     linea += "\n"
+    #     with open('asist.csv', 'a', encoding='utf-8') as f:
+    #         f.write(linea)
+    #     f.close()
     for generatedKey, value in allUsersDictionary.items():
         print(generatedKey)
-        if (validation == False):
-            if (len(value["eventsToAssist"]) > 0):
-                with open('asist.csv', 'a', encoding='utf-8') as f:
-                    print(value)
-                    nuevaLinea += value["name"]
-                    for val in value["eventsToAssist"]:
-                        nuevaLinea += ","
-                        nuevaLinea += val
-                    nuevaLinea += "\n"
-                    print(nuevaLinea)
-                    f.write(nuevaLinea) #escribir
-                    validation = True
-                f.close()
+        if (len(value["eventsToAssist"]) > 0):
+            with open('asist.csv', 'a', encoding='utf-8') as f:
+                print(value)
+                nuevaLinea += value["mail"]
+                for val in value["eventsToAssist"]:
+                    nuevaLinea += ","
+                    nuevaLinea += val
+                nuevaLinea += "\n"
+                print(nuevaLinea)
+            f.close()
+    with open('asist.csv', 'a', encoding='utf-8') as f:
+        f.write(nuevaLinea)
+    f.close()
     
 
         

@@ -149,11 +149,6 @@ while continueExecuting!=0:
                     showGraphic(dataToShow)
                 elif (menuSelection == 6):#Cerrar sesión 
                     print("Cerrando Sesión")
-                    print(allUsersDictionary)
-                    saveEvents(allEventsDictionary)
-                    print(allUsersDictionary)
-                    saveUsers(allUsersDictionary)
-                    saveAsists(allUsersDictionary)
                     isLoggedIn = False
             else:
                 print("Porfavor ingrese un número entre 1 y 6")
@@ -230,7 +225,9 @@ while continueExecuting!=0:
                     else:
                         print("No existe una cuenta con el correo especificado")
                 elif (menuSelection == 3):  #Salir del Programa
-                    print("Saliendo del programa")
+                    saveEvents(allEventsDictionary)
+                    saveUsers(allUsersDictionary)
+                    saveAsists(allUsersDictionary)
                     currentUserDictionary = {}
                     continueExecuting = 0
             else:
